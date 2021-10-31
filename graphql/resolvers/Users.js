@@ -42,39 +42,50 @@ module.exports = {
             }
         },
 
-        async register(_, {registerInput: {username, email, password, confirmPassword}}) {
-            //validate user data
-            const {valid, errors} = validateRegisterInput(username, email, password, confirmPassword)
-            if(!valid) {
-                throw new UserInputError("Error", {errors})
+        async register(
+            _,
+            {
+                registerInput: { username, email, password, confirmPassword }
             }
-            //check user doesnt already exist
-            const user = User.findOne({ username });
-            if(user) {
-                throw new UserInputError('User already exists', {
-                    errors: {
-                        username: 'This Username already exists'
-                    }
-                })
-            }
-            //hash password and create auth token
-            password = await bcrypt.hash(password, 12);
-            const newUser = new User({
+        ) {
+            // Validate user data
+            const { valid, errors } = validateRegisterInput(
                 username,
                 email,
                 password,
-                createdAt: new Date().toISOString(),
+                confirmPassword
+            );
+            if (!valid) {
+                throw new UserInputError('Errors', { errors });
+            }
+            // TODO: Make sure user doesnt already exist
+            const user = await User.findOne({ username });
+            if (user) {
+                throw new UserInputError('Username is taken', {
+                    errors: {
+                        username: 'This username is taken'
+                    }
+                });
+            }
+            // hash password and create an auth token
+            password = await bcrypt.hash(password, 12);
+
+            const newUser = new User({
+                email,
+                username,
+                password,
+                createdAt: new Date().toISOString()
             });
 
             const res = await newUser.save();
 
-            const token = generateToken(res)
+            const token = generateToken(res);
 
             return {
                 ...res._doc,
                 id: res._id,
                 token
-            }
+            };
         }
     }
 }
