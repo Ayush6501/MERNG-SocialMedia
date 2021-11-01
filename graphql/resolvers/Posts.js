@@ -30,7 +30,7 @@ module.exports = {
             const user = checkAuth(context)
             console.log(user)
 
-            if(args.body.trim() === '') {
+            if(body.trim() === '') {
                 throw new Error('Body must not be empty')
             }
 

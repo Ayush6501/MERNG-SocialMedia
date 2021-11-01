@@ -1,10 +1,10 @@
-const { ApolloServer, PubSub } = require('apollo-server')
+const { ApolloServer } = require('apollo-server')
 const mongoose = require('mongoose')
 
 const typeDefs = require('./graphql/typeDefs');
 const resolvers = require('./graphql/resolvers');
 const { MONGODB } = require('./config.js')
-import { PubSub } from 'graphql-subscriptions';
+const { PubSub } =  require('graphql-subscriptions');
 
 const pubsub = new PubSub();
 
@@ -15,6 +15,7 @@ const server = new ApolloServer({
 });
 
 // CdlV965XQ3jFtEAt
+// noinspection JSVoidFunctionReturnValueUsed,JSCheckFunctionSignatures
 mongoose.connect(MONGODB, {useNewUrlParser: true})
     .then(() => {
         console.log("MONGODB Connected")
