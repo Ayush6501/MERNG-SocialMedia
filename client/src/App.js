@@ -5,17 +5,22 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Navbar from "./components/Navbar";
 import {Container} from "semantic-ui-react";
+import {AuthProvider} from "./context/auth-context";
+import AuthRoute from './components/authRoute';
+import './app.css';
 
 function App() {
   return (
-    <Router>
-        <Container>
-            <Navbar />
-            <Route path='/' exact component={Home} />
-            <Route path='/login' component={Login} />
-            <Route path='/register' component={Register} />
-        </Container>
-    </Router>
+    <AuthProvider>
+        <Router>
+            <Container>
+                <Navbar />
+                <Route path='/' exact component={Home} />
+                <AuthRoute path='/login' component={Login} />
+                <AuthRoute path='/register' component={Register} />
+            </Container>
+        </Router>
+    </AuthProvider>
   );
 }
 
