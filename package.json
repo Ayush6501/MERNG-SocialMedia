@@ -17,6 +17,8 @@
     "graphql": "^15.6.1",
     "graphql-subscriptions": "^1.2.1",
     "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
+    "moment": "^2.29.1",
     "mongoose": "^6.0.10"
   },
   "devDependencies": {

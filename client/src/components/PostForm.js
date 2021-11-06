@@ -1,10 +1,10 @@
 import React from 'react';
-import {Button, Form} from "semantic-ui-react";
-import {useForm} from "../hooks/hooks";
-import gql from "graphql-tag";
+import { Button, Form } from 'semantic-ui-react';
+import gql from 'graphql-tag';
 import {useMutation} from "@apollo/client";
+import {useForm} from "../hooks/hooks";
 
-function PostForm(props) {
+function PostForm() {
     const { values, onChange, handleSubmit } = useForm(createPostCallback, {
         body: ''
     });
@@ -21,26 +21,42 @@ function PostForm(props) {
                     getPosts: [result.data.createPost, ...data.getPosts],
                 }
             });
-            values.body = ''
-    }})
+            values.body = '';
+        },
+        onError(err) {
+            console.log(err)
+        },
+    })
 
     function createPostCallback() {
         createPost();
     }
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <h2>Create A Post</h2>
-            <Form.Field>
-                <Form.Input
-                    name='body'
-                    placeholder="Hi World!"
-                    onChange={onChange}
-                    value={values.body}
-                />
-                <Button type='submit' color='teal'>Post</Button>
-            </Form.Field>
-        </Form>
+        <>
+            <Form onSubmit={handleSubmit}>
+                <h2>Create a post:</h2>
+                <Form.Field>
+                    <Form.Input
+                        placeholder="Hi World!"
+                        name="body"
+                        onChange={onChange}
+                        value={values.body}
+                        error={error ? true : false}
+                    />
+                    <Button type="submit" color="teal">
+                        Submit
+                    </Button>
+                </Form.Field>
+            </Form>
+            {error && (
+                <div className="ui error message" style={{ marginBottom: 20 }}>
+                    <ul className="list">
+                        <li>{error.graphQLErrors[0].message}</li>
+                    </ul>
+                </div>
+            )}
+        </>
     );
 }
 
@@ -94,3 +110,5 @@ const FETCH_POST = gql`
         }
     }
 `;
+
+
