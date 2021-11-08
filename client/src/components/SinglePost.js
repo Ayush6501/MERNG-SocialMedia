@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import gql from "graphql-tag";
-import {useQuery} from "@apollo/client";
-import {Button, Card, Grid, Icon, Image, Label} from "semantic-ui-react";
+import {useMutation, useQuery} from "@apollo/client";
+import {Button, Card, Form, Grid, Icon, Image, Label} from "semantic-ui-react";
 import moment from "moment";
 import LikeButton from "./LikeButton";
 import {useContext} from "react";
@@ -9,8 +9,12 @@ import {AuthContext} from "../context/auth-context";
 import DeleteButton from "./DeleteButton";
 
 function SinglePost(props) {
+    const [comment, setComment] = useState('');
+    const commentRef = useRef(null);
+
     const postId = props.match.params.postId;
     const { user } = useContext(AuthContext);
+    useState()
     console.log(postId)
     let postMarkup;
 
@@ -20,6 +24,17 @@ function SinglePost(props) {
         }
     });
     console.log(data)
+
+    const [submitComment] = useMutation(CREATE_COMMENT, {
+        update() {
+            setComment('');
+            commentRef.current.blur();
+        },
+        variables: {
+            postId,
+            body: comment
+        }
+    })
 
     function deletePostCallback() {
         props.history.push('/')
@@ -72,12 +87,50 @@ function SinglePost(props) {
                                 )}
                             </Card.Content>
                         </Card>
+                        {user && (
+                            <Card fluid>
+                                <Card.Content>
+                                    <p>Post a Comment</p>
+                                    <Form>
+                                        <div className="ui action input fluid">
+                                            <input
+                                                type="text"
+                                                placeholder="Comment..."
+                                                name='comment'
+                                                onChange={(e) => setComment(e.target.value)}
+                                                value={comment}
+                                                ref={commentRef}
+                                            />
+                                            <button
+                                                type='submit'
+                                                className='ui button teal'
+                                                disabled={comment.trim() === ''}
+                                                onClick={submitComment}
+                                            >
+                                                Submit
+                                            </button>
+                                        </div>
+                                    </Form>
+                                </Card.Content>
+                            </Card>
+                        )}
+                        {comments.map(comment => (
+                            <Card fluid  key={comment.id}>
+                                <Card.Content>
+                                    {user && user.username === comment.username && (
+                                        <DeleteButton postId={id} commentId={comment.id} />
+                                    )}
+                                    <Card.Header>{comment.username}</Card.Header>
+                                    <Card.Meta>{moment(comment.createdAt).fromNow()}</Card.Meta>
+                                    <Card.Description>{comment.body}</Card.Description>
+                                </Card.Content>
+                            </Card>
+                        ))}
                     </Grid.Column>
                 </Grid.Row>
             </Grid>
         )
     }
-
     return postMarkup;
 }
 
@@ -101,6 +154,21 @@ const FETCH_POST_QUERY = gql`
                 createdAt
                 body
             }
+        }
+    }
+`;
+
+const CREATE_COMMENT = gql`
+    mutation CreateComment($postId: ID!, $body: String!) {
+        createComment(postId: $postId, body: $body) {
+            id
+            comments {
+                id
+                createdAt
+                username
+                body
+            }
+            commentCount
         }
     }
 `;

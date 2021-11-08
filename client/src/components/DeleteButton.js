@@ -1,44 +1,51 @@
 import React, {useState} from 'react';
-import {Button, Confirm, Icon} from "semantic-ui-react";
+import {Button, Confirm, Icon, Popup} from "semantic-ui-react";
 import gql from "graphql-tag";
 import {useMutation} from "@apollo/client";
 
-function DeleteButton({postId, callback}) {
+function DeleteButton({postId, commentId, callback}) {
     const [confirmOpen, setConfirmOpen] = useState(false);
 
-    const [deletePost] = useMutation(DELETE_POST, {
+    const mutation = commentId ? DELETE_COMMENT: DELETE_POST;
+
+    const [deletePostOrMutation] = useMutation(mutation, {
         update(proxy) {
             setConfirmOpen(false);
-            const data = proxy.readQuery({
-                query: FETCH_POST
-            });
-            proxy.writeQuery({
-                query: FETCH_POST,
-                data: {
-                    getPosts: data.getPosts.filter(p => p.id !== postId)
-                }
-            })
-            if(callback) callback()
+            if (!commentId) {
+                const data = proxy.readQuery({
+                    query: FETCH_POST
+                });
+                data.getPosts = data.getPosts.filter((p) => p.id !== postId);
+                proxy.writeQuery({ query: FETCH_POST, data });
+            }
+            if (callback) callback();
         },
         variables: {
-            postId
+            postId,
+            commentId
         }
-    })
+    });
 
     return (
         <>
-            <Button
-                as='div'
-                floated='right'
-                color='red'
-                onClick={() => setConfirmOpen(true)}
-            >
-                <Icon name='trash' style={{margin: 0}}/>
-            </Button>
+            <Popup
+                content={commentId ? "Delete Comment" : "Delete Post"}
+                inverted
+                trigger = {
+                    <Button
+                        as='div'
+                        floated='right'
+                        color='red'
+                        onClick={() => setConfirmOpen(true)}
+                    >
+                        <Icon name='trash' style={{margin: 0}}/>
+                    </Button>
+                }
+            />
             <Confirm
                 open={confirmOpen}
                 onCancel={() => setConfirmOpen(false)}
-                onConfirm={deletePost}
+                onConfirm={deletePostOrMutation}
             />
         </>
     );
@@ -74,4 +81,21 @@ const FETCH_POST = gql`
             commentCount
         }
     }
+`;
+
+const DELETE_COMMENT = gql`
+    mutation deleteComment($commentId: ID!, $postId: ID!) {
+        deleteComment(commentId: $commentId, postId: $postId) {
+            id
+            username
+            comments {
+                createdAt
+                username
+                body
+                id
+            }
+            commentCount
+        }
+    }
+        
 `;
