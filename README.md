@@ -9,21 +9,22 @@
   <h2 align="center">MERNG Social Media App</h2>
 
   <p align="center">
-    A fully Working Social Media App with create/delete post functionalities, user verification and authentication using JWT, developed using
+    A fully operational Social Media App with CRUD post functionalities, user verification and authentication using JWT, developed using
     MongoDB
     ExpressJs
     ReactJs
     NodeJs
     GraphQL
     <br />
-    <a href="https://github.com/Ayush6501/react-disneyplus-clone"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/Ayush6501/MERNG-SocialMedia"><strong>Explore the docs »</strong></a>
     <br />
+    <a href="https://vast-mountain-47744.herokuapp.com/"><strong>The server »</strong></a>
     <br />
-    <a href="https://react-disneyplus-clone-a6501.firebaseapp.com/">View Demo</a>
+    <a href="https://reverent-einstein-de1ea3.netlify.app/">View Demo</a>
     ·
-    <a href="https://github.com/Ayush6501/react-disneyplus-clone/issues">Report Bug</a>
+    <a href="https://github.com/Ayush6501/MERNG-SocialMedia">Report Bug</a>
     ·
-    <a href="https://github.com/Ayush6501/react-disneyplus-clone/issues">Request Feature</a>
+    <a href="https://github.com/Ayush6501/MERNG-SocialMedia/issues">Request Feature</a>
   </p>
 </p>
 
@@ -93,31 +94,46 @@ This is an example of how to list things you need to use the software and how to
    ```sh
    git clone https://github.com/Ayush6501/react-disneyplus-clone.git
    ```
-2. Install NPM packages
+2. Install NPM packages 
    ```sh
    npm install
    ```
-
-
+3. Start the server 
+   ```sh
+   npm run serve
+   ```
+4. Navigate to client folder
+   ```sh
+   cd client
+   ```
+5. Install NPM packages 
+   ```sh
+   npm install
+   ```
+6. Start the localhost server for the client interface
+   ```sh
+   npm start
+   ```
 
 <!-- SC EXAMPLES -->
 ## Screenshots
 
-1. The Login Page
-<img src="images/0.png" alt="Logo">
+1. The Server Page
+<img src="images/sc1.png" alt="Logo">
 2. Home Page
-<img src="images/1.png" alt="Logo">
-3. Movie Page
-<img src="images/2.png" alt="Logo">
-
-
+<img src="images/sc2.png" alt="Logo">
+3. Login Page
+<img src="images/sc3.png" alt="Logo">
+2. Posts Page
+<img src="images/sc4.png" alt="Logo">
+3. Comment Page
+<img src="images/sc5.png" alt="Logo">
 
 
 <!-- Inspiration -->
 ## Inspiration
 
-The Original site can be found at <a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjSl-vr2-DyAhUBU30KHRRVCaAQFnoECAgQAQ&url=https%3A%2F%2Fwww.disneyplus.com%2F&usg=AOvVaw0e4Kl8rgYSxck8B7OiKpHS">Here</a>.
-
+This site has been inspired by the various social media platform such as Twitter, Facebook, Instagram etc.
 
 
 <!-- CONTRIBUTING -->
