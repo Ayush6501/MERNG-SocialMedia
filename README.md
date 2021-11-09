@@ -10,11 +10,11 @@
 
   <p align="center">
     A fully operational Social Media App with CRUD post functionalities, user verification and authentication using JWT, developed using
-    MongoDB
-    ExpressJs
-    ReactJs
-    NodeJs
-    GraphQL
+    MongoDB,
+    ExpressJs,
+    ReactJs,
+    NodeJs,
+    GraphQL,
     <br />
     <a href="https://github.com/Ayush6501/MERNG-SocialMedia"><strong>Explore the docs »</strong></a>
     <br />
